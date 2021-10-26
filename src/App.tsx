@@ -1,45 +1,39 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import styles from "./App.module.css";
+import { Card, TextField } from "@mui/material";
+import { ChangeEvent, useState } from "react";
+import 'katex/dist/katex.min.css';
+import Latex from 'react-latex-next';
+import evaluatex from "evaluatex/dist/evaluatex";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+
+  const [expr, setExpr] = useState('');
+
+  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
+    const input = event.target.value;
+    setExpr(input);
+  }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
+    <div>
+      <div className={styles.header}>
+        <h1 style={{ color: "White" }}>Tex Evaluator</h1>
+      </div>
+
+      <Card className={styles.card}>
+        <h2>Evaluate Tex Expression</h2>
+        <TextField variant="filled" label="Enter Tex Expression here" onChange={handleInputChange} />
+        <Latex>{`$$${expr}$$`}</Latex>
+        <p>{evaluate(expr) ?? ''}</p>
+      </Card>
     </div>
-  )
+  );
 }
 
-export default App
+function evaluate(texExpr: string): number | undefined {
+  try {
+    return evaluatex(texExpr)();
+  } catch (error) {
+    return undefined;
+  }
+}

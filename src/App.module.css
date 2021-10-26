@@ -1,0 +1,12 @@
+.header {
+    padding: 64px 0;
+    text-align: center;
+    background: linear-gradient(120deg, #6b21f3, #a02eec);
+}
+.card {
+    display: flex;
+    flex-direction: column;
+    max-width: 640px;
+    padding: 0 16px;
+    margin: 64px auto;
+}
